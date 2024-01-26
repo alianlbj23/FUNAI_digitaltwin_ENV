@@ -2,20 +2,22 @@ using UnityEngine;
 using WebSocketSharp;
 using System;
 using Newtonsoft.Json.Linq;
-
+using TMPro;
 public class ArmTransfer : MonoBehaviour
 {
     public ConnectRosBridge connectRos;
     // inputTopic & outputTopic設成publish會有很多問題，會造成這邊改了名稱，但外面沒有導致難以找到bug
     string inputTopic = "/joint_trajectory_point";
     string carInputTopic = "/test";
+    string carInputTopic_ = "/car_C_control";
     string carOutputTopic = "/wheel_speed";
     string outputTopic = "/arm_angle";
 
-    // 用于存储接收到的关节位置
     public float[] jointPositions;
     private float[] data = new float[6];
     private float[] carWheelData = new float[4];
+    private float modifyAngle = 45.0f;
+    public bool manual;
     void Start()
     {
         connectRos.ws.OnMessage += OnWebSocketMessage;
@@ -25,6 +27,7 @@ public class ArmTransfer : MonoBehaviour
 
     void Update()
     {
+        CheckMode();
     }
 
     private void OnWebSocketMessage(object sender, MessageEventArgs e)
@@ -33,8 +36,11 @@ public class ArmTransfer : MonoBehaviour
         var genericMessage = JsonUtility.FromJson<GenericRosMessage>(jsonString);
         if (genericMessage.topic == inputTopic)
         {
-            RobotNewsMessageJointTrajectory message = JsonUtility.FromJson<RobotNewsMessageJointTrajectory>(jsonString);
-            HandleJointTrajectoryMessage(message);
+            if(manual){
+                RobotNewsMessageJointTrajectory message = JsonUtility.FromJson<RobotNewsMessageJointTrajectory>(jsonString);
+                HandleJointTrajectoryMessage(message);
+            }
+            
         }
         else if(genericMessage.topic == carInputTopic)
         {
@@ -45,14 +51,14 @@ public class ArmTransfer : MonoBehaviour
     private void HandleJointTrajectoryMessage(RobotNewsMessageJointTrajectory message)
     {
         jointPositions = message.msg.positions;
-        data[0] = jointPositions[4];
-        data[1] = jointPositions[4];
-        data[2] = jointPositions[3];
-        data[3] = jointPositions[2];
-        data[4] = jointPositions[1];
-        data[5] = jointPositions[0];
+        data[0] = jointPositions[4]-modifyAngle;
+        data[1] = jointPositions[4]-modifyAngle;
+        data[2] = jointPositions[3]-modifyAngle;
+        data[3] = jointPositions[2]-modifyAngle;
+        data[4] = jointPositions[1]-modifyAngle;
+        data[5] = jointPositions[0]-modifyAngle;
         PublishFloat32MultiArray(outputTopic, data);
-        Debug.Log("Received positions: " + String.Join(", ", jointPositions));
+        // Debug.Log("Received positions: " + String.Join(", ", jointPositions));
     }
 
     private void HandleStringMessage(RobotNewsMessageString message)
@@ -63,42 +69,42 @@ public class ArmTransfer : MonoBehaviour
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();
         float targetVelRight = targetVel[1].ToObject<float>();
-        if(targetVelLeft == targetVelRight && targetVelRight > 0)
-        {
-            carWheelData[0] = speed;
-            carWheelData[1] = speed;
-            carWheelData[2] = speed;
-            carWheelData[3] = speed;
-        }
-        else if(targetVelLeft > targetVelRight)
-        {
-            carWheelData[0] = speed;
-            carWheelData[1] = -speed;
-            carWheelData[2] = speed;
-            carWheelData[3] = -speed;   
-        }
-        else if(targetVelLeft < targetVelRight)
-        {
-            carWheelData[0] = -speed;
-            carWheelData[1] = speed;
-            carWheelData[2] = -speed;
-            carWheelData[3] = speed;   
-        }
-        else if(targetVelLeft == targetVelRight && targetVelRight < 0)
-        {
-            carWheelData[0] = -speed;
-            carWheelData[1] = -speed;
-            carWheelData[2] = -speed;
-            carWheelData[3] = -speed;   
-        }
-        else
-        {
-            carWheelData[0] = 0.0f;
-            carWheelData[1] = 0.0f;
-            carWheelData[2] = 0.0f;
-            carWheelData[3] = 0.0f; 
-        }
-        PublishFloat32MultiArray(carOutputTopic, carWheelData);
+        // if(targetVelLeft == targetVelRight && targetVelRight > 0)
+        // {
+        //     carWheelData[0] = speed;
+        //     carWheelData[1] = speed;
+        //     carWheelData[2] = speed;
+        //     carWheelData[3] = speed;
+        // }
+        // else if(targetVelLeft > targetVelRight)
+        // {
+        //     carWheelData[0] = speed;
+        //     carWheelData[1] = -speed;
+        //     carWheelData[2] = speed;
+        //     carWheelData[3] = -speed;   
+        // }
+        // else if(targetVelLeft < targetVelRight)
+        // {
+        //     carWheelData[0] = -speed;
+        //     carWheelData[1] = speed;
+        //     carWheelData[2] = -speed;
+        //     carWheelData[3] = speed;   
+        // }
+        // else if(targetVelLeft == targetVelRight && targetVelRight < 0)
+        // {
+        //     carWheelData[0] = -speed;
+        //     carWheelData[1] = -speed;
+        //     carWheelData[2] = -speed;
+        //     carWheelData[3] = -speed;   
+        // }
+        // else
+        // {
+        //     carWheelData[0] = 0.0f;
+        //     carWheelData[1] = 0.0f;
+        //     carWheelData[2] = 0.0f;
+        //     carWheelData[3] = 0.0f; 
+        // }
+        // PublishFloat32MultiArray(carOutputTopic, carWheelData);
     }
 
 
@@ -183,5 +189,26 @@ public class ArmTransfer : MonoBehaviour
     public class StringMessage
     {
         public string data;
+    }
+    private void CheckMode()
+    {
+        GameObject tmpGameObject = GameObject.Find("== Canvas == /Canvas/Settings-Canvas/Car/Mode/Horizontal Selector/Main Content/Text");
+        if (tmpGameObject != null)
+        {
+            TextMeshProUGUI tmpComponent = tmpGameObject.GetComponent<TextMeshProUGUI>();
+            if (tmpComponent != null)
+            {
+                string textContent = tmpComponent.text;
+                manual = (textContent == "AI");
+            }
+            else
+            {
+                Debug.LogError("TextMeshProUGUI component not found on the object");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject not found in the scene");
+        }
     }
 }

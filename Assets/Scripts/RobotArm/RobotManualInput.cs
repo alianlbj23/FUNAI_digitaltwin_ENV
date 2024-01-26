@@ -18,7 +18,7 @@ public class RobotManualInput : MonoBehaviour
 
     public bool manual;
     private float[] data = new float[6];
-    const float INITIAL_ANGLE = 90;
+    const float INITIAL_ANGLE = 60;
 
     private void Start()
     {
@@ -35,7 +35,7 @@ public class RobotManualInput : MonoBehaviour
             data[2] = Wrist.value - INITIAL_ANGLE;
             data[3] = Elbow.value - INITIAL_ANGLE;
             data[4] = Shoulder.value - INITIAL_ANGLE;
-            data[5] = Base.value - INITIAL_ANGLE;
+            data[5] = Base.value - 90.0f;
             PublishFloat32MultiArray(topicName, data);
         }
     }
