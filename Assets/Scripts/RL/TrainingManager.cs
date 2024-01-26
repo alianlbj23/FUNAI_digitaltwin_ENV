@@ -26,7 +26,7 @@ public class TrainingManager : MonoBehaviour
     public ConnectRosBridge connectRos;
     
     private WebSocket socket;
-    private string rosbridgeServerUrl = "ws://localhost:9090";
+    public string rosbridgeServerUrl = "ws://192.168.206.1:9090";
     public Robot robot;
     [SerializeField]
     GameObject anchor1, anchor2, anchor3, anchor4;
@@ -189,7 +189,10 @@ public class TrainingManager : MonoBehaviour
         {
             return;
         }
-        
+        //  若校正好 可用speed和rotateSpeed固定以下四輪數值
+        float speed = 0.0f;
+        float rotateSpeed = 0.0f;
+
         wheel_data[0] = data[0] * 360.0f; // left_f
         wheel_data[2] = data[2] * 360.0f; // right_font
         wheel_data[1] = data[1] * 360.0f; 

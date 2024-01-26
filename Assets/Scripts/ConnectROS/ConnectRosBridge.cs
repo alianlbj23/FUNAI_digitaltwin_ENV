@@ -4,7 +4,8 @@ using UnityEngine;
 using WebSocketSharp;
 public class ConnectRosBridge : MonoBehaviour
 {
-    string rosbridgeServerAddress = "ws://localhost:9090";
+    // string rosbridgeServerAddress = "ws://localhost:9090";
+    public string rosbridgeServerAddress = "ws://192.168.206.1:9090";
     // private string rosbridgeServerAddress = "ws://192.168.200.34:9090";
     public WebSocket ws;
 

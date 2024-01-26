@@ -28718,6 +28718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectRos: {fileID: 1301951277}
   jointPositions: []
+  manual: 0
 --- !u!1 &944095558
 GameObject:
   m_ObjectHideFlags: 0
@@ -40001,7 +40002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 128854594940374187, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.damping
-      value: 1000000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 128854594940374187, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
@@ -40061,7 +40062,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b495ac0cd6247f5478e5bec0c2857464, type: 2}
     - target: {fileID: 1577582717572815457, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.damping
-      value: 1000000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 1577582717572815457, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
@@ -40273,7 +40274,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c14ab744ac61b5f4bbd90a3529401865, type: 2}
     - target: {fileID: 4125622422847904083, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.damping
-      value: 1000000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 4125622422847904083, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
@@ -40309,7 +40310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.damping
-      value: 1000000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
@@ -40361,7 +40362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.damping
-      value: 1000000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
@@ -40517,7 +40518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7500061316849826783, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.damping
-      value: 1000000
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 7500061316849826783, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness

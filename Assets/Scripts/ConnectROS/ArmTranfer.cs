@@ -9,14 +9,13 @@ public class ArmTransfer : MonoBehaviour
     // inputTopic & outputTopic設成publish會有很多問題，會造成這邊改了名稱，但外面沒有導致難以找到bug
     string inputTopic = "/joint_trajectory_point";
     string carInputTopic = "/test";
-    string carInputTopic_ = "/car_C_control";
     string carOutputTopic = "/wheel_speed";
     string outputTopic = "/arm_angle";
 
     public float[] jointPositions;
     private float[] data = new float[6];
     private float[] carWheelData = new float[4];
-    private float modifyAngle = 45.0f;
+    
     public bool manual;
     void Start()
     {
@@ -50,6 +49,7 @@ public class ArmTransfer : MonoBehaviour
     }
     private void HandleJointTrajectoryMessage(RobotNewsMessageJointTrajectory message)
     {
+        float modifyAngle = 45.0f;
         jointPositions = message.msg.positions;
         data[0] = jointPositions[4]-modifyAngle;
         data[1] = jointPositions[4]-modifyAngle;
@@ -65,46 +65,48 @@ public class ArmTransfer : MonoBehaviour
     {
         var jsonData = JObject.Parse(message.msg.data);
         var targetVel = jsonData["data"]["target_vel"];
-        float speed = 700;
+        float speedRate = 0.1f;
+        float speed = Mathf.Abs(targetVel[0].ToObject<float>()*speedRate)*360.0f;
+        float rotateSpeed = speed+speed*2.5f;
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();
         float targetVelRight = targetVel[1].ToObject<float>();
-        // if(targetVelLeft == targetVelRight && targetVelRight > 0)
-        // {
-        //     carWheelData[0] = speed;
-        //     carWheelData[1] = speed;
-        //     carWheelData[2] = speed;
-        //     carWheelData[3] = speed;
-        // }
-        // else if(targetVelLeft > targetVelRight)
-        // {
-        //     carWheelData[0] = speed;
-        //     carWheelData[1] = -speed;
-        //     carWheelData[2] = speed;
-        //     carWheelData[3] = -speed;   
-        // }
-        // else if(targetVelLeft < targetVelRight)
-        // {
-        //     carWheelData[0] = -speed;
-        //     carWheelData[1] = speed;
-        //     carWheelData[2] = -speed;
-        //     carWheelData[3] = speed;   
-        // }
-        // else if(targetVelLeft == targetVelRight && targetVelRight < 0)
-        // {
-        //     carWheelData[0] = -speed;
-        //     carWheelData[1] = -speed;
-        //     carWheelData[2] = -speed;
-        //     carWheelData[3] = -speed;   
-        // }
-        // else
-        // {
-        //     carWheelData[0] = 0.0f;
-        //     carWheelData[1] = 0.0f;
-        //     carWheelData[2] = 0.0f;
-        //     carWheelData[3] = 0.0f; 
-        // }
-        // PublishFloat32MultiArray(carOutputTopic, carWheelData);
+        if(targetVelLeft == targetVelRight && targetVelRight > 0)
+        {
+            carWheelData[0] = speed;
+            carWheelData[1] = speed;
+            carWheelData[2] = speed;
+            carWheelData[3] = speed;
+        }
+        else if(targetVelLeft > targetVelRight)
+        {
+            carWheelData[0] = rotateSpeed;
+            carWheelData[1] = -rotateSpeed;
+            carWheelData[2] = rotateSpeed;
+            carWheelData[3] = -rotateSpeed;   
+        }
+        else if(targetVelLeft < targetVelRight)
+        {
+            carWheelData[0] = -rotateSpeed;
+            carWheelData[1] = rotateSpeed;
+            carWheelData[2] = -rotateSpeed;
+            carWheelData[3] = rotateSpeed;   
+        }
+        else if(targetVelLeft == targetVelRight && targetVelRight < 0)
+        {
+            carWheelData[0] = -speed;
+            carWheelData[1] = -speed;
+            carWheelData[2] = -speed;
+            carWheelData[3] = -speed;   
+        }
+        else
+        {
+            carWheelData[0] = 0.0f;
+            carWheelData[1] = 0.0f;
+            carWheelData[2] = 0.0f;
+            carWheelData[3] = 0.0f; 
+        }
+        PublishFloat32MultiArray(carOutputTopic, carWheelData);
     }
 
 
