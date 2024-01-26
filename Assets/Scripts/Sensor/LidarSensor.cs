@@ -32,7 +32,6 @@ public class LidarSensor : MonoBehaviour
     {
         line.positionCount = lineNum * 2;
         lineInterval = numMeasurementsPerScan / lineNum;
-        Debug.Log("djhsakluodhsa");
     }
 
     void BeginScan()

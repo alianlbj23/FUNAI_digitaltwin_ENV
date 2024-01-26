@@ -47,7 +47,7 @@ public class Robot : MonoBehaviour
         Quaternion carQ = baseLinkM.q;
         carQ.x = -carQ.x;
         carQ.z = -carQ.z;
-
+        
         List<float> range = lidar.GetRange();
         
         var rangeDirection = lidar.GetRangeDirection(); // 將每個lidar座標轉換成ros座標

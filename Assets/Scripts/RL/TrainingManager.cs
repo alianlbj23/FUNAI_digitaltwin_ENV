@@ -189,37 +189,11 @@ public class TrainingManager : MonoBehaviour
         {
             return;
         }
-        float right = 0.0f;
-        float left = 0.0f;
-        float forward_speed = 500.0f;
-        float rotate_speed = 700.0f;
-
-        if(data[0] == 0.0f){
-            right = forward_speed;
-            left = forward_speed;
-        }
-        else if(data[0] == 1.0f){
-            right = -rotate_speed;
-            left = rotate_speed;
-        }
-        else if(data[0] == 2.0f){
-            right = rotate_speed;
-            left = -rotate_speed;
-        }
-        else if(data[0] == 3.0f){
-            right = -forward_speed;
-            left = -forward_speed;
-        }
-        else if(data[0] == 4.0f){
-            right = 0.0f;
-            left = 0.0f;
-        }
         
-        // 接學長給的街口
-        wheel_data[0] = right;
-        wheel_data[2] = right;
-        wheel_data[1] = left;
-        wheel_data[3] = left;
+        wheel_data[0] = data[0] * 360.0f; // left_f
+        wheel_data[2] = data[2] * 360.0f; // right_font
+        wheel_data[1] = data[1] * 360.0f; 
+        wheel_data[3] = data[3] * 360.0f;
         if(manual)
         {
             PublishFloat32MultiArray(topicName, wheel_data);
