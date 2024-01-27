@@ -67,7 +67,7 @@ public class ArmTransfer : MonoBehaviour
         var targetVel = jsonData["data"]["target_vel"];
         float speedRate = 0.1f;
         float speed = Mathf.Abs(targetVel[0].ToObject<float>()*speedRate)*360.0f;
-        float rotateSpeed = speed+speed*2.5f;
+        float rotateSpeed = speed+speed*10.0f;
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();
         float targetVelRight = targetVel[1].ToObject<float>();

@@ -21933,6 +21933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topicName: /wheel_speed
   connectRos: {fileID: 1301951277}
+  rosbridgeServerUrl: ws://192.168.200.34:9090
   robot: {fileID: 412565672}
   anchor1: {fileID: 589985558}
   anchor2: {fileID: 2038404179}
@@ -39564,6 +39565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a5552b480b132439fa5e2f84a53500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rosbridgeServerAddress: ws://192.168.200.34:9090
 --- !u!4 &1301951278
 Transform:
   m_ObjectHideFlags: 0
