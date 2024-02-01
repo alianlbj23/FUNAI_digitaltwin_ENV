@@ -55,7 +55,7 @@ public class LidarSensor : MonoBehaviour
         directionVectors_tmp = new List<Vector3>(directionVectors);
 
         // Publish lidar data to ROS //先註解掉，不然會占用頻道空間
-        // lidarToRos.PublishLidar(range_tmp);
+        lidarToRos.PublishLidar(range_tmp);
 
         m_NumMeasurementsTaken = 0;
         ranges.Clear();

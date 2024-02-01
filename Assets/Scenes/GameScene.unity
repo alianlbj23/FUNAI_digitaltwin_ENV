@@ -8595,7 +8595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2249422512991268328, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_MaxValue
-      value: 150
+      value: 128.2724
       objectReference: {fileID: 0}
     - target: {fileID: 2249422512991268328, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_MinValue
@@ -8615,15 +8615,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2249422513897671087, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2249422513897671087, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2249422513897671087, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2249422514428425676, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_text
@@ -8631,11 +8631,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2249422514605138480, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2249422514605138480, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2700398564909579564, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_Text
@@ -15151,7 +15151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 522653786}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: classRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21933,7 +21933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topicName: /wheel_speed
   connectRos: {fileID: 1301951277}
-  rosbridgeServerUrl: ws://192.168.200.34:9090
+  rosbridgeServerUrl: ws://localhost:9090
   robot: {fileID: 412565672}
   anchor1: {fileID: 589985558}
   anchor2: {fileID: 2038404179}
@@ -39565,7 +39565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a5552b480b132439fa5e2f84a53500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rosbridgeServerAddress: ws://192.168.200.34:9090
+  rosbridgeServerAddress: ws://localhost:9090
 --- !u!4 &1301951278
 Transform:
   m_ObjectHideFlags: 0
@@ -58569,6 +58569,10 @@ PrefabInstance:
     - target: {fileID: 1651229734109531685, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_fontStyle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2248949655989113804, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
+      propertyPath: useCustomAlpha
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2249422512991268328, guid: 56aca52c3ca69e44ea5927e9d1e67667, type: 3}
       propertyPath: m_Value

@@ -60,12 +60,7 @@ public class TrainingManager : MonoBehaviour
         public int data_offset;
     }
 
-
-    public float stepTime = 0.05f; //0.1f
-    public float currentStepTime = 0.0f;
     float target_change_flag = 0;
-    string mode = "Training";
-    private bool zeroDataPublished = false;
     public bool manual; //  偵測目前使否為AI模式
     void Awake()
     {
@@ -167,7 +162,6 @@ public class TrainingManager : MonoBehaviour
         RobotNewsMessage message = JsonUtility.FromJson<RobotNewsMessage>(jsonString);
         // float[] data = message.msg.data;
         
-        zeroDataPublished = false;
         switch (message.topic)
         {
             case "/AI_2_Unity":
@@ -193,10 +187,11 @@ public class TrainingManager : MonoBehaviour
         float speed = 0.0f;
         float rotateSpeed = 0.0f;
 
-        wheel_data[0] = data[0] * 360.0f; // left_f
-        wheel_data[2] = data[2] * 360.0f; // right_font
-        wheel_data[1] = data[1] * 360.0f; 
-        wheel_data[3] = data[3] * 360.0f;
+        wheel_data[0] = data[0] * 360.0f; // LF
+        wheel_data[2] = data[2] * 360.0f; // RF
+        wheel_data[1] = data[1] * 360.0f; // LB
+        wheel_data[3] = data[3] * 360.0f; // RB
+        
         if(manual)
         {
             PublishFloat32MultiArray(topicName, wheel_data);
