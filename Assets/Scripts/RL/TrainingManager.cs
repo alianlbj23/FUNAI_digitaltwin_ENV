@@ -142,7 +142,7 @@ public class TrainingManager : MonoBehaviour
 
     void CarMove()
     {
-        float[] data = new float[] {600.0f, 600.0f, 600.0f, 600.0f};
+        float[] data = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
         float speed = 5.0f;
         if (Input.GetKey(KeyCode.W))
         {

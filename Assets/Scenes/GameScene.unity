@@ -28718,7 +28718,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectRos: {fileID: 1301951277}
   jointPositions: []
+  speedRate: 1
+  speedRotateRate: 1
   manual: 0
+  armRate: 1
 --- !u!1 &944095558
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,8 +15,10 @@ public class ArmTransfer : MonoBehaviour
     public float[] jointPositions;
     private float[] data = new float[6];
     private float[] carWheelData = new float[4];
-    
+    public float speedRate = 0.1f;
+    public float speedRotateRate = 2.0f;
     public bool manual;
+    public float modifyAngle = 60.0f;
     void Start()
     {
         connectRos.ws.OnMessage += OnWebSocketMessage;
@@ -49,7 +51,6 @@ public class ArmTransfer : MonoBehaviour
     }
     private void HandleJointTrajectoryMessage(RobotNewsMessageJointTrajectory message)
     {
-        float modifyAngle = 45.0f;
         jointPositions = message.msg.positions;
         data[0] = jointPositions[4]-modifyAngle;
         data[1] = jointPositions[4]-modifyAngle;
@@ -57,6 +58,7 @@ public class ArmTransfer : MonoBehaviour
         data[3] = jointPositions[2]-modifyAngle;
         data[4] = jointPositions[1]-modifyAngle;
         data[5] = jointPositions[0]-modifyAngle;
+        Debug.Log("Data array values: " + String.Join(", ", data));
         PublishFloat32MultiArray(outputTopic, data);
         
         // Debug.Log("Received positions: " + String.Join(", ", jointPositions));
@@ -66,9 +68,8 @@ public class ArmTransfer : MonoBehaviour
     {
         var jsonData = JObject.Parse(message.msg.data);
         var targetVel = jsonData["data"]["target_vel"];
-        float speedRate = 0.1f;
-        float speed = Mathf.Abs(targetVel[0].ToObject<float>()*speedRate)*360.0f;
-        float rotateSpeed = speed+speed*100.0f;
+        float speed = Mathf.Abs(targetVel[0].ToObject<float>())*360.0f*speedRate;
+        float rotateSpeed = speed*speedRotateRate;
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();
         float targetVelRight = targetVel[1].ToObject<float>();
