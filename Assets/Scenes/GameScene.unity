@@ -21933,15 +21933,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topicName: /wheel_speed
   connectRos: {fileID: 1301951277}
-  rosbridgeServerUrl: ws://localhost:9090
+  rosbridgeServerUrl: ws://192.168.68.110:9090
   robot: {fileID: 412565672}
   anchor1: {fileID: 589985558}
   anchor2: {fileID: 2038404179}
   anchor3: {fileID: 1110899823}
   anchor4: {fileID: 1479131132}
   target: {fileID: 782628375}
-  stepTime: 0.05
-  currentStepTime: 0
+  modeManager: {fileID: 1889168771}
   manual: 0
   delayInSeconds: 0
 --- !u!1 &726011127
@@ -29637,6 +29636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeedSlider: {fileID: 1396245280}
   rotationSpeedSlider: {fileID: 765076795}
+  modeManager: {fileID: 1889168771}
 --- !u!1 &963442493
 GameObject:
   m_ObjectHideFlags: 0
@@ -39565,7 +39565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a5552b480b132439fa5e2f84a53500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rosbridgeServerAddress: ws://localhost:9090
+  rosbridgeServerAddress: ws://192.168.68.110:9090
 --- !u!4 &1301951278
 Transform:
   m_ObjectHideFlags: 0
@@ -53858,6 +53858,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884678911}
   m_CullTransparentMesh: 1
+--- !u!1 &1889168769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1889168770}
+  - component: {fileID: 1889168771}
+  m_Layer: 0
+  m_Name: modeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1889168770
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889168769}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1940677799}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1889168771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889168769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62f62ead96ccf04cabf4cf706dc54eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: inference
 --- !u!1 &1894559603
 GameObject:
   m_ObjectHideFlags: 0
@@ -55520,6 +55565,7 @@ Transform:
   - {fileID: 782628376}
   - {fileID: 921299665}
   - {fileID: 722221604}
+  - {fileID: 1889168770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1944103868

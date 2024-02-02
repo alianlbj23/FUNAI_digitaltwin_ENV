@@ -23,6 +23,7 @@ public class TrainingManager : MonoBehaviour
     string AI2Unity_Receive_Topic = "/AI_2_Unity";
     string AI2Unity_reset_Topic = "/AI_2_Unity_RESET_flag";
     public string topicName = "/wheel_speed";
+    string topicName2 = "/Unity_2_AI_stop_flag";
     public ConnectRosBridge connectRos;
     
     private WebSocket socket;
@@ -59,7 +60,8 @@ public class TrainingManager : MonoBehaviour
         public int[] dim;
         public int data_offset;
     }
-
+    string mode;
+    public ModeManager modeManager;
     float target_change_flag = 0;
     public bool manual; //  偵測目前使否為AI模式
     void Awake()
@@ -78,6 +80,7 @@ public class TrainingManager : MonoBehaviour
 
     IEnumerator DelayedExecution()
     {
+        mode = modeManager.GetMode();
         delayInSeconds = 0.001f;
         yield return new WaitForSeconds(delayInSeconds);
         
@@ -93,7 +96,6 @@ public class TrainingManager : MonoBehaviour
             SubscribeToTopic(AI2Unity_reset_Topic);
         };
         socket.OnMessage += OnWebSocketMessage;
-
 
         socket.Connect();
 
@@ -113,16 +115,109 @@ public class TrainingManager : MonoBehaviour
     void FixedUpdate ()
     {
         CheckMode(); // 確認目前模式
-        if (key == 1)
+        if (mode == "inference")
         {
-            key = 0;
-            StartCoroutine(DelayedSend(0.1f, newTarget));                
-        }
+            if (key == 1)
+            {
+                key = 0;
+                StartCoroutine(DelayedSend(0.1f, newTarget));                
+            }
 
-        if (target_change_flag == 1)
+            if (target_change_flag == 1)
+            {
+                ReloadCurrentScene();
+            } 
+        }
+        else if (mode == "data")
         {
-            ReloadCurrentScene();
-        } 
+            CarMove();
+        }
+        else
+        {
+            Debug.Log("please set the correct mode.");
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        
+    }
+
+    void CarMove()
+    {
+        float[] data = new float[] {600.0f, 600.0f, 600.0f, 600.0f};
+        float speed = 5.0f;
+        if (Input.GetKey(KeyCode.W))
+        {
+            data[0] = speed;
+            data[1] = speed;
+            data[2] = speed;
+            data[3] = speed;
+            ExecuteRobotAction(data, robot);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            data[0] = speed;
+            data[1] = -speed;
+            data[2] = speed;
+            data[3] = -speed;
+            ExecuteRobotAction(data, robot);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            data[0] = -speed;
+            data[1] = speed;
+            data[2] = -speed;
+            data[3] = speed;
+            ExecuteRobotAction(data, robot);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            data[0] = -speed;
+            data[1] = -speed;
+            data[2] = -speed;
+            data[3] = -speed;
+            ExecuteRobotAction(data, robot);
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            exitUnityAndStoreData();
+        }
+        State state = robot.GetState(newTarget);
+        Send(state);
+    }
+    void exitUnityAndStoreData()
+    {
+        Dictionary<string, object> message1 = new Dictionary<string, object>
+        {
+            { "op", "publish" },
+            { "id", "1" },
+            { "topic", topicName2 },
+            { "msg", new Dictionary<string, string>
+                {
+                    { "data", "0"}
+                }
+            }
+        };
+        string jsonMessage1 = MiniJSON.Json.Serialize(message1);
+        try
+        {
+            socket.Send(jsonMessage1);
+        }
+        catch
+        {
+            Debug.Log("error-send");
+        }
+        UnityEditor.EditorApplication.isPlaying = false;
+    }
+    void WheelSpeed(float leftWheel, float rightWheel)
+    {
+        Robot.Action action = new Robot.Action();
+        action.voltage = new List<float>();
+
+        action.voltage.Add(leftWheel);
+        action.voltage.Add(rightWheel);
+        robot.DoAction(action);
+
+        State state = robot.GetState(newTarget);
+        Send(state);
     }
     IEnumerator DelayedSend(float delayTime, Vector3 newTarget)
     {

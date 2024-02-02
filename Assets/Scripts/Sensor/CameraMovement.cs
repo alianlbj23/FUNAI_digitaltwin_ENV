@@ -6,13 +6,22 @@ public class CameraMovement : MonoBehaviour
 {
     public Slider moveSpeedSlider;
     public Slider rotationSpeedSlider;
-
+    public ModeManager modeManager;
+    string mode;
     float moveSpeed = 5.0f;
     float rotationSpeed = 200.0f;
 
     // Update is called once per frame
+    void Start()
+    {
+        mode = modeManager.GetMode();
+    }
     void Update()
     {        
+        if (mode != "inference")
+        {
+            return; 
+        }
         Vector3 movement = new Vector3();
         float scrollValue = Input.GetAxis("Mouse ScrollWheel");
 
