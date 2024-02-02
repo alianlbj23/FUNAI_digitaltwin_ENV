@@ -52,12 +52,17 @@ public class ArmTransfer : MonoBehaviour
     private void HandleJointTrajectoryMessage(RobotNewsMessageJointTrajectory message)
     {
         jointPositions = message.msg.positions;
+        for (int i = 0; i < jointPositions.Length; i++)
+        {
+            jointPositions[i] = jointPositions[i] * Mathf.Rad2Deg;
+        }
         data[0] = jointPositions[4]-modifyAngle;
         data[1] = jointPositions[4]-modifyAngle;
         data[2] = jointPositions[3]-modifyAngle;
         data[3] = jointPositions[2]-modifyAngle;
         data[4] = jointPositions[1]-modifyAngle;
         data[5] = jointPositions[0]-modifyAngle;
+        
         Debug.Log("Data array values: " + String.Join(", ", data));
         PublishFloat32MultiArray(outputTopic, data);
         

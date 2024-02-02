@@ -28721,7 +28721,7 @@ MonoBehaviour:
   speedRate: 1
   speedRotateRate: 1
   manual: 0
-  armRate: 1
+  modifyAngle: 60
 --- !u!1 &944095558
 GameObject:
   m_ObjectHideFlags: 0
