@@ -25,9 +25,9 @@ public class TrainingManager : MonoBehaviour
     public string topicName = "/wheel_speed";
     string topicName2 = "/Unity_2_AI_stop_flag";
     public ConnectRosBridge connectRos;
-    
+    public float speedRate = 0.5f;
     private WebSocket socket;
-    public string rosbridgeServerUrl = "ws://192.168.206.1:9090";
+    public string rosbridgeServerUrl = "ws://192.168.68.110:9090";
     public Robot robot;
     [SerializeField]
     GameObject anchor1, anchor2, anchor3, anchor4;
@@ -35,7 +35,8 @@ public class TrainingManager : MonoBehaviour
     [SerializeField]
     GameObject target;
     Vector3 newTarget_car;
-
+    public float maxVoltage = 12.0f; // 最大電壓
+    public float maxRPM = 330.0f; // 最大RPM
     Vector3 newTarget;
     public System.Random random = new System.Random();
     private float[] wheel_data = new float[4];
@@ -63,7 +64,7 @@ public class TrainingManager : MonoBehaviour
     string mode;
     public ModeManager modeManager;
     float target_change_flag = 0;
-    public bool manual; //  偵測目前使否為AI模式
+    bool manual; //  偵測目前使否為AI模式
     void Awake()
     {
         baselink = robot.transform.Find("base_link");
@@ -72,7 +73,7 @@ public class TrainingManager : MonoBehaviour
     Vector3 carPos;
     
     float key = 0;
-    public float delayInSeconds = 0f;
+    float delayInSeconds = 0f;
     void Start()
     {
         StartCoroutine(DelayedExecution());
@@ -109,9 +110,6 @@ public class TrainingManager : MonoBehaviour
     float target_y_car;
 
     
-    float delayTimer = 0.0f;
-    float delayDuration = 2.0f;
-    bool isDelayedActionTriggered = false;
     void FixedUpdate ()
     {
         CheckMode(); // 確認目前模式
@@ -120,7 +118,7 @@ public class TrainingManager : MonoBehaviour
             if (key == 1)
             {
                 key = 0;
-                StartCoroutine(DelayedSend(0.1f, newTarget));                
+                StartCoroutine(DelayedSend(0.2f, newTarget));                
             }
 
             if (target_change_flag == 1)
@@ -282,10 +280,10 @@ public class TrainingManager : MonoBehaviour
         float speed = 0.0f;
         float rotateSpeed = 0.0f;
 
-        wheel_data[0] = data[0] * 360.0f; // LF
-        wheel_data[2] = data[2] * 360.0f; // RF
-        wheel_data[1] = data[1] * 360.0f; // LB
-        wheel_data[3] = data[3] * 360.0f; // RB
+        wheel_data[0] = data[0] * 360.0f * speedRate; // LF
+        wheel_data[2] = data[2] * 360.0f * speedRate; // RF
+        wheel_data[1] = data[1] * 360.0f * speedRate; // LB
+        wheel_data[3] = data[3] * 360.0f * speedRate; // RB
         
         if(manual)
         {
