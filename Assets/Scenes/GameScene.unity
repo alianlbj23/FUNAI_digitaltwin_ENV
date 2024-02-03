@@ -26072,8 +26072,8 @@ Transform:
   - {fileID: 704597233}
   - {fileID: 1575381827}
   - {fileID: 722221604}
-  - {fileID: 942353024}
   - {fileID: 1889168770}
+  - {fileID: 942353024}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &837945589
@@ -53878,7 +53878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62f62ead96ccf04cabf4cf706dc54eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: inference
+  mode: data
 --- !u!1 &1894559603
 GameObject:
   m_ObjectHideFlags: 0
