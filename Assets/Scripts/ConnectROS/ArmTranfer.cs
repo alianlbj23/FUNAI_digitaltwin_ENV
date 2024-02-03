@@ -11,13 +11,14 @@ public class ArmTransfer : MonoBehaviour
     string carInputTopic = "/test";
     string carOutputTopic = "/wheel_speed";
     string outputTopic = "/arm_angle";
+    public MotorSpeedCalculator motorSpeedCalculator;
 
     public float[] jointPositions;
     private float[] data = new float[6];
     private float[] carWheelData = new float[4];
     public float speedRate = 0.1f;
     public float speedRotateRate = 2.0f;
-    public bool manual;
+    bool manual;
     public float modifyAngle = 60.0f;
     void Start()
     {
@@ -61,7 +62,7 @@ public class ArmTransfer : MonoBehaviour
         data[2] = jointPositions[3]-modifyAngle;
         data[3] = jointPositions[2]-modifyAngle;
         data[4] = jointPositions[1]-modifyAngle;
-        data[5] = jointPositions[0]-modifyAngle;
+        data[5] = jointPositions[0]-modifyAngle - 30.0f;
         
         Debug.Log("Data array values: " + String.Join(", ", data));
         PublishFloat32MultiArray(outputTopic, data);
@@ -73,7 +74,7 @@ public class ArmTransfer : MonoBehaviour
     {
         var jsonData = JObject.Parse(message.msg.data);
         var targetVel = jsonData["data"]["target_vel"];
-        float speed = Mathf.Abs(targetVel[0].ToObject<float>())*360.0f*speedRate;
+        float speed = motorSpeedCalculator.CalculateSpeed(Mathf.Abs(targetVel[0].ToObject<float>()))*speedRate;
         float rotateSpeed = speed*speedRotateRate;
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();

@@ -22,12 +22,15 @@ public class TrainingManager : MonoBehaviour
     string Unity2AI_Topic = "/Unity_2_AI";
     string AI2Unity_Receive_Topic = "/AI_2_Unity";
     string AI2Unity_reset_Topic = "/AI_2_Unity_RESET_flag";
-    public string topicName = "/wheel_speed";
+    string topicName = "/wheel_speed";
     string topicName2 = "/Unity_2_AI_stop_flag";
-    public ConnectRosBridge connectRos;
+    public MotorSpeedCalculator motorSpeedCalculator;
+    public IpManager ipManager;
+    public ModeManager modeManager;
     public float speedRate = 0.5f;
     private WebSocket socket;
-    public string rosbridgeServerUrl = "ws://192.168.68.110:9090";
+    
+    string rosbridgeServerUrl;
     public Robot robot;
     [SerializeField]
     GameObject anchor1, anchor2, anchor3, anchor4;
@@ -35,8 +38,6 @@ public class TrainingManager : MonoBehaviour
     [SerializeField]
     GameObject target;
     Vector3 newTarget_car;
-    public float maxVoltage = 12.0f; // 最大電壓
-    public float maxRPM = 330.0f; // 最大RPM
     Vector3 newTarget;
     public System.Random random = new System.Random();
     private float[] wheel_data = new float[4];
@@ -62,7 +63,7 @@ public class TrainingManager : MonoBehaviour
         public int data_offset;
     }
     string mode;
-    public ModeManager modeManager;
+    
     float target_change_flag = 0;
     bool manual; //  偵測目前使否為AI模式
     void Awake()
@@ -81,6 +82,7 @@ public class TrainingManager : MonoBehaviour
 
     IEnumerator DelayedExecution()
     {
+        rosbridgeServerUrl = ipManager.GetIp();
         mode = modeManager.GetMode();
         delayInSeconds = 0.001f;
         yield return new WaitForSeconds(delayInSeconds);
@@ -280,10 +282,10 @@ public class TrainingManager : MonoBehaviour
         float speed = 0.0f;
         float rotateSpeed = 0.0f;
 
-        wheel_data[0] = data[0] * 360.0f * speedRate; // LF
-        wheel_data[2] = data[2] * 360.0f * speedRate; // RF
-        wheel_data[1] = data[1] * 360.0f * speedRate; // LB
-        wheel_data[3] = data[3] * 360.0f * speedRate; // RB
+        wheel_data[0] = motorSpeedCalculator.CalculateSpeed(data[0]) * speedRate; // LF
+        wheel_data[2] = motorSpeedCalculator.CalculateSpeed(data[2]) * speedRate; // RF
+        wheel_data[1] = motorSpeedCalculator.CalculateSpeed(data[1]) * speedRate; // LB
+        wheel_data[3] = motorSpeedCalculator.CalculateSpeed(data[3]) * speedRate; // RB
         
         if(manual)
         {
@@ -305,7 +307,7 @@ public class TrainingManager : MonoBehaviour
             }}
         }}";
 
-        connectRos.ws.Send(jsonMessage);
+        socket.Send(jsonMessage);
     }
     private void HandleAI2UnityReceiveTopic(RobotNewsMessage message)
     {   

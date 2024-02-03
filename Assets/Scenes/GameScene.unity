@@ -21577,6 +21577,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702211611}
   m_Mesh: {fileID: 4300000, guid: 09cb81f6ddeeb3046979371d041373b5, type: 3}
+--- !u!1 &704597231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 704597233}
+  - component: {fileID: 704597232}
+  m_Layer: 0
+  m_Name: 'MotorSpeedCalculator '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &704597232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704597231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d71cd8efd3d3df4eb4bff205dd6a60f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxVoltage: 12
+  maxRPM: 176
+--- !u!4 &704597233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704597231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 835980184}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &704984075
 GameObject:
   m_ObjectHideFlags: 0
@@ -21896,12 +21942,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722221603}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.63939, y: -0.9299832, z: 2.2761612}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1940677799}
+  m_Father: {fileID: 835980184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &722221605
 MonoBehaviour:
@@ -21915,19 +21961,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ff7c03a7360b1bbbf9f7e2551079ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topicName: /wheel_speed
-  connectRos: {fileID: 1301951277}
-  speedRate: 0.3
-  rosbridgeServerUrl: ws://192.168.68.110:9090
+  motorSpeedCalculator: {fileID: 704597232}
+  ipManager: {fileID: 1575381828}
+  modeManager: {fileID: 1889168771}
+  speedRate: 10
   robot: {fileID: 412565672}
   anchor1: {fileID: 589985558}
   anchor2: {fileID: 2038404179}
   anchor3: {fileID: 1110899823}
   anchor4: {fileID: 1479131132}
   target: {fileID: 782628375}
-  maxVoltage: 12
-  maxRPM: 330
-  modeManager: {fileID: 1889168771}
 --- !u!1 &726011127
 GameObject:
   m_ObjectHideFlags: 0
@@ -26007,7 +26050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835980184}
   m_Layer: 0
-  m_Name: ==frictionTest==
+  m_Name: ==customize==
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26021,11 +26064,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835980182}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3240142, y: 0.8380995, z: 32.448322}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.3240356, y: 0.83807373, z: 32.448322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 704597233}
+  - {fileID: 1575381827}
+  - {fileID: 722221604}
+  - {fileID: 942353024}
+  - {fileID: 1889168770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &837945589
@@ -28674,12 +28722,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942353023}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 158.33232, y: 869.1733, z: -56.548237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1475535956}
+  m_Father: {fileID: 835980184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &942353025
 MonoBehaviour:
@@ -28694,10 +28742,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectRos: {fileID: 1301951277}
+  motorSpeedCalculator: {fileID: 704597232}
   jointPositions: []
-  speedRate: 1
-  speedRotateRate: 1
-  manual: 0
+  speedRate: 3
+  speedRotateRate: 3
   modifyAngle: 60
 --- !u!1 &944095558
 GameObject:
@@ -39493,7 +39541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a5552b480b132439fa5e2f84a53500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rosbridgeServerAddress: ws://localhost:9090
+  ipManager: {fileID: 1575381828}
 --- !u!4 &1301951278
 Transform:
   m_ObjectHideFlags: 0
@@ -43293,7 +43341,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 942353024}
   - {fileID: 256948834}
   - {fileID: 1580896336}
   - {fileID: 710844923}
@@ -45807,6 +45854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1575381827}
+  - component: {fileID: 1575381828}
   m_Layer: 0
   m_Name: Ipmanager
   m_TagString: Untagged
@@ -45822,13 +45870,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575381826}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 957.67596, y: 539.1619, z: -32.448322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1944799554}
+  m_Father: {fileID: 835980184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1575381828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575381826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc686c9425444f94bbced69607a31904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ip: 192.168.68.110
 --- !u!1 &1576997421
 GameObject:
   m_ObjectHideFlags: 0
@@ -53798,12 +53859,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889168769}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.63939, y: -0.9299832, z: 2.2761612}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1940677799}
+  m_Father: {fileID: 835980184}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1889168771
 MonoBehaviour:
@@ -55479,8 +55540,6 @@ Transform:
   m_Children:
   - {fileID: 782628376}
   - {fileID: 921299665}
-  - {fileID: 722221604}
-  - {fileID: 1889168770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1944103868
@@ -55828,7 +55887,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1301951278}
-  - {fileID: 1575381827}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1947574765
@@ -58855,7 +58913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2099129444
 Transform:
   m_ObjectHideFlags: 0

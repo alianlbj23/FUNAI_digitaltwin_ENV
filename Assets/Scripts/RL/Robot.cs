@@ -72,8 +72,11 @@ public class Robot : MonoBehaviour
             ROS2CarQuaternion = ToRosQuaternion(carQ),
             ROS2Range = range.ToArray(),
             ROS2RangePosition = rangeDirection.ToArray(),
+            ROS2WheelAngularVelocityLeftBack = ToRosVec(angVLB),
+            ROS2WheelAngularVelocityLeftFront = ToRosVec(angVLF),
+            ROS2WheelAngularVelocityRightBack = ToRosVec(angVRB),
+            ROS2WheelAngularVelocityRightFront = ToRosVec(angVRF)
         };
-
         return ROS2State;
     }
 
