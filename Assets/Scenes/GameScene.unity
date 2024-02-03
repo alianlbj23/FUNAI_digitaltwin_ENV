@@ -28746,7 +28746,11 @@ MonoBehaviour:
   jointPositions: []
   speedRate: 3
   speedRotateRate: 3
-  modifyAngle: 60
+  axis1CorrectionFactor: 90
+  axis2CorrectionFactor: 60
+  axis3CorrectionFactor: 60
+  axis4CorrectionFactor: 60
+  axis5CorrectionFactor: -10
 --- !u!1 &944095558
 GameObject:
   m_ObjectHideFlags: 0
@@ -53878,7 +53882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62f62ead96ccf04cabf4cf706dc54eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: data
+  mode: inference
 --- !u!1 &1894559603
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,13 @@ public class ArmTransfer : MonoBehaviour
     public float speedRate = 0.1f;
     public float speedRotateRate = 2.0f;
     bool manual;
-    public float modifyAngle = 60.0f;
+    float modifyAngle = 60.0f;
+    public float axis1CorrectionFactor = 90.0f;
+    public float axis2CorrectionFactor = 60.0f;
+    public float axis3CorrectionFactor = 60.0f;
+    public float axis4CorrectionFactor = 60.0f;
+    public float axis5CorrectionFactor = 60.0f;
+    
     void Start()
     {
         connectRos.ws.OnMessage += OnWebSocketMessage;
@@ -57,12 +63,12 @@ public class ArmTransfer : MonoBehaviour
         {
             jointPositions[i] = jointPositions[i] * Mathf.Rad2Deg;
         }
-        data[0] = jointPositions[4]-modifyAngle;
-        data[1] = jointPositions[4]-modifyAngle;
-        data[2] = jointPositions[3]-modifyAngle;
-        data[3] = jointPositions[2]-modifyAngle;
-        data[4] = jointPositions[1]-modifyAngle;
-        data[5] = jointPositions[0]-modifyAngle - 30.0f;
+        data[0] = 180.0f - jointPositions[4] - axis5CorrectionFactor;
+        data[1] = 180.0f - jointPositions[4] - axis5CorrectionFactor;
+        data[2] = jointPositions[3]-axis4CorrectionFactor;
+        data[3] = jointPositions[2]-axis3CorrectionFactor;
+        data[4] = jointPositions[1]-axis2CorrectionFactor;
+        data[5] = jointPositions[0]-axis1CorrectionFactor;
         
         Debug.Log("Data array values: " + String.Join(", ", data));
         PublishFloat32MultiArray(outputTopic, data);
