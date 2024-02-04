@@ -80,8 +80,9 @@ public class ArmTransfer : MonoBehaviour
     {
         var jsonData = JObject.Parse(message.msg.data);
         var targetVel = jsonData["data"]["target_vel"];
-        float speed = motorSpeedCalculator.CalculateSpeed(Mathf.Abs(targetVel[0].ToObject<float>()))*speedRate;
-        float rotateSpeed = speed*speedRotateRate;
+        float originSpeed = motorSpeedCalculator.CalculateSpeed(Mathf.Abs(targetVel[0].ToObject<float>()));
+        float speed = originSpeed*speedRate;
+        float rotateSpeed = originSpeed*speedRotateRate;
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();
         float targetVelRight = targetVel[1].ToObject<float>();

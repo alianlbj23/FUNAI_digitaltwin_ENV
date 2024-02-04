@@ -28748,9 +28748,9 @@ MonoBehaviour:
   speedRotateRate: 3
   axis1CorrectionFactor: 90
   axis2CorrectionFactor: 60
-  axis3CorrectionFactor: 60
-  axis4CorrectionFactor: 60
-  axis5CorrectionFactor: -10
+  axis3CorrectionFactor: 30
+  axis4CorrectionFactor: 45
+  axis5CorrectionFactor: 60
 --- !u!1 &944095558
 GameObject:
   m_ObjectHideFlags: 0
@@ -40295,6 +40295,14 @@ PrefabInstance:
       value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
+      propertyPath: m_AnchorRotation.w
+      value: 0.74235195
+      objectReference: {fileID: 0}
+    - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
+      propertyPath: m_AnchorRotation.y
+      value: -0.67001015
+      objectReference: {fileID: 0}
+    - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 1000000
       objectReference: {fileID: 0}
@@ -40312,11 +40320,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_ParentAnchorRotation.w
-      value: -0.74235195
+      value: 0.742352
       objectReference: {fileID: 0}
     - target: {fileID: 4351078755722455884, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_ParentAnchorRotation.y
-      value: 0.67001027
+      value: -0.6700102
       objectReference: {fileID: 0}
     - target: {fileID: 4423002861212628717, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: speed
@@ -40347,6 +40355,14 @@ PrefabInstance:
       value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
+      propertyPath: m_AnchorRotation.w
+      value: -0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
+      propertyPath: m_AnchorRotation.y
+      value: -0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_XDrive.stiffness
       value: 1000000
       objectReference: {fileID: 0}
@@ -40364,11 +40380,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_ParentAnchorRotation.w
-      value: 0.7071069
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5122302956490432909, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_ParentAnchorRotation.y
-      value: 0.7071069
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5231228257528599468, guid: 63c2ba80ec735d043854a7f9593996b7, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -45893,7 +45909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc686c9425444f94bbced69607a31904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.68.110
+  ip: 192.168.68.112
 --- !u!1 &1576997421
 GameObject:
   m_ObjectHideFlags: 0
