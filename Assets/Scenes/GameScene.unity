@@ -45909,7 +45909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc686c9425444f94bbced69607a31904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.68.112
+  ip: 192.168.68.102
 --- !u!1 &1576997421
 GameObject:
   m_ObjectHideFlags: 0
@@ -58962,7 +58962,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectRos: {fileID: 1301951277}
-  topicName: /lidar_value
 --- !u!1 &2101243009
 GameObject:
   m_ObjectHideFlags: 0
