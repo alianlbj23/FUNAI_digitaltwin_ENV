@@ -28744,8 +28744,8 @@ MonoBehaviour:
   connectRos: {fileID: 1301951277}
   motorSpeedCalculator: {fileID: 704597232}
   jointPositions: []
-  speedRate: 3
-  speedRotateRate: 3
+  speedRate: 7
+  speedRotateRate: 7
   axis1CorrectionFactor: 90
   axis2CorrectionFactor: 60
   axis3CorrectionFactor: 30
@@ -33035,7 +33035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minRange: 0.1
   maxRange: 100
-  numMeasurementsPerScan: 360
+  numMeasurementsPerScan: 1800
   lineNum: 36
   line: {fileID: 940751249}
   lidarToRos: {fileID: 2099129445}
@@ -45909,7 +45909,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc686c9425444f94bbced69607a31904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 192.168.68.102
 --- !u!1 &1576997421
 GameObject:
   m_ObjectHideFlags: 0
