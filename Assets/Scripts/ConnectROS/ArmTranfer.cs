@@ -8,16 +8,20 @@ public class ArmTransfer : MonoBehaviour
     public ConnectRosBridge connectRos;
     // inputTopic & outputTopic設成publish會有很多問題，會造成這邊改了名稱，但外面沒有導致難以找到bug
     string inputTopic = "/joint_trajectory_point";
-    string carInputTopic = "/test";
+    string carFrontInputTopic = "/test";
+    string carRearInputTopic = "/car_C_control";
     string carOutputTopic = "/wheel_speed";
     string outputTopic = "/arm_angle";
     public MotorSpeedCalculator motorSpeedCalculator;
+    private bool isFrontWheelDataReceived = false;
+    private bool isRearWheelDataReceived = false;
+    private float[] frontWheelData = new float[2];
+    private float[] rearWheelData = new float[2];
 
     public float[] jointPositions;
     private float[] data = new float[6];
     private float[] carWheelData = new float[4];
     public float speedRate = 0.1f;
-    public float speedRotateRate = 2.0f;
     bool manual;
     float modifyAngle = 60.0f;
     public float axis1CorrectionFactor = 90.0f;
@@ -25,12 +29,13 @@ public class ArmTransfer : MonoBehaviour
     public float axis3CorrectionFactor = 60.0f;
     public float axis4CorrectionFactor = 60.0f;
     public float axis5CorrectionFactor = 60.0f;
-    
+
     void Start()
     {
         connectRos.ws.OnMessage += OnWebSocketMessage;
         SubscribeToTopic(inputTopic, "joint_trajectory_point");
-        SubscribeToTopic(carInputTopic, "string");
+        SubscribeToTopic(carFrontInputTopic, "string");
+        SubscribeToTopic(carRearInputTopic, "string");
     }
 
     void Update()
@@ -41,6 +46,7 @@ public class ArmTransfer : MonoBehaviour
     private void OnWebSocketMessage(object sender, MessageEventArgs e)
     {
         string jsonString = e.Data;
+        string carWheelType = "";
         var genericMessage = JsonUtility.FromJson<GenericRosMessage>(jsonString);
         if (genericMessage.topic == inputTopic)
         {
@@ -48,12 +54,19 @@ public class ArmTransfer : MonoBehaviour
                 RobotNewsMessageJointTrajectory message = JsonUtility.FromJson<RobotNewsMessageJointTrajectory>(jsonString);
                 HandleJointTrajectoryMessage(message);
             }
-            
+
         }
-        else if(genericMessage.topic == carInputTopic)
+        else if(genericMessage.topic == carFrontInputTopic)
         {
+            carWheelType = "Front";
             RobotNewsMessageString message = JsonUtility.FromJson<RobotNewsMessageString>(jsonString);
-            HandleStringMessage(message);
+            HandleStringMessage(message, carWheelType);
+        }
+        else if(genericMessage.topic == carRearInputTopic)
+        {
+            carWheelType = "Rear";
+            RobotNewsMessageString message = JsonUtility.FromJson<RobotNewsMessageString>(jsonString);
+            HandleStringMessage(message, carWheelType);
         }
     }
     private void HandleJointTrajectoryMessage(RobotNewsMessageJointTrajectory message)
@@ -69,59 +82,54 @@ public class ArmTransfer : MonoBehaviour
         data[3] = jointPositions[2]-axis3CorrectionFactor;
         data[4] = jointPositions[1]-axis2CorrectionFactor;
         data[5] = jointPositions[0]-axis1CorrectionFactor;
-        
+
         Debug.Log("Data array values: " + String.Join(", ", data));
         PublishFloat32MultiArray(outputTopic, data);
-        
+
         // Debug.Log("Received positions: " + String.Join(", ", jointPositions));
     }
 
-    private void HandleStringMessage(RobotNewsMessageString message)
+    private void HandleStringMessage(RobotNewsMessageString message, string carWheelType)
     {
         var jsonData = JObject.Parse(message.msg.data);
         var targetVel = jsonData["data"]["target_vel"];
-        float originSpeed = motorSpeedCalculator.CalculateSpeed(Mathf.Abs(targetVel[0].ToObject<float>()));
-        float speed = originSpeed*speedRate;
-        float rotateSpeed = originSpeed*speedRotateRate;
+        float carLeftSpeed = motorSpeedCalculator.CalculateSpeed(targetVel[0].ToObject<float>()) * speedRate;
+        float carRightSpeed = motorSpeedCalculator.CalculateSpeed(targetVel[1].ToObject<float>()) * speedRate;
         // json轉換成float
         float targetVelLeft = targetVel[0].ToObject<float>();
         float targetVelRight = targetVel[1].ToObject<float>();
-        if(targetVelLeft == targetVelRight && targetVelRight > 0)
-        {
-            carWheelData[0] = speed;
-            carWheelData[1] = speed;
-            carWheelData[2] = speed;
-            carWheelData[3] = speed;
+
+        if(carWheelType == "Front"){
+            frontWheelData[0] = carLeftSpeed;
+            frontWheelData[1] = carRightSpeed;
+            isFrontWheelDataReceived = true;
         }
-        else if(targetVelLeft > targetVelRight)
+
+        else if (carWheelType == "Rear")
         {
-            carWheelData[0] = rotateSpeed;
-            carWheelData[1] = -rotateSpeed;
-            carWheelData[2] = rotateSpeed;
-            carWheelData[3] = -rotateSpeed;   
+            rearWheelData[0] = carLeftSpeed;
+            rearWheelData[1] = carRightSpeed;
+            isRearWheelDataReceived = true;
         }
-        else if(targetVelLeft < targetVelRight)
+
+        if (isFrontWheelDataReceived && isRearWheelDataReceived)
         {
-            carWheelData[0] = -rotateSpeed;
-            carWheelData[1] = rotateSpeed;
-            carWheelData[2] = -rotateSpeed;
-            carWheelData[3] = rotateSpeed;   
+            Debug.Log("test");
+            ProcessAndPublishWheelData();
+            // 重置狀態
+            isFrontWheelDataReceived = false;
+            isRearWheelDataReceived = false;
         }
-        else if(targetVelLeft == targetVelRight && targetVelRight < 0)
-        {
-            carWheelData[0] = -speed;
-            carWheelData[1] = -speed;
-            carWheelData[2] = -speed;
-            carWheelData[3] = -speed;   
-        }
-        else
-        {
-            carWheelData[0] = 0.0f;
-            carWheelData[1] = 0.0f;
-            carWheelData[2] = 0.0f;
-            carWheelData[3] = 0.0f; 
-        }
-        PublishFloat32MultiArray(carOutputTopic, carWheelData);
+    }
+
+    private void ProcessAndPublishWheelData()
+    {
+        float[] finalWheelData = new float[4];
+        finalWheelData[0] = frontWheelData[0];
+        finalWheelData[1] = frontWheelData[1];
+        finalWheelData[2] = rearWheelData[0];
+        finalWheelData[3] = rearWheelData[1];
+        PublishFloat32MultiArray(carOutputTopic, finalWheelData);
     }
 
 
@@ -145,7 +153,7 @@ public class ArmTransfer : MonoBehaviour
         connectRos.ws.Send(subscribeMessage);
     }
 
-    
+
     public void PublishFloat32MultiArray(string topic, float[] data)
     {
         string jsonMessage = $@"{{
